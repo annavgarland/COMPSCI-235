@@ -1,11 +1,10 @@
-from flask import Flask
+from flask import Flask, session, redirect, url_for, request
 from markupsafe import escape
 
 
 def create_app():
 
     app = Flask(__name__)
-
     @app.route('/')
     def index():
         return 'Index page'
@@ -32,5 +31,14 @@ def create_app():
     @app.route('/news', methods=['GET'])
     def shows_news():
         return "Today’s news is ..."
+
+    @app.route('/greeting', methods=['GET'])
+    def greeting():
+        name = 'User'
+        if 'name' in request.args:
+            name = request.args.get('name')
+        return '''
+            <h1>Kia Ora {}!</h1>
+        '''.format(name)
 
     return app
